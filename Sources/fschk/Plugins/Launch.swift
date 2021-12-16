@@ -1,5 +1,7 @@
 import Foundation
 
+// https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html
+
 private let launchDirs: [String] = [
     "/Library/LaunchDaemons/",
     "/Library/LaunchAgents/",
@@ -63,8 +65,12 @@ struct PluginLaunch {
         print("------------\n")
         for (index, item) in items.enumerated() {
             print("path: \(item.url.path)")
-            print("prog: \(item.program ?? "")")
-            print("args: \(item.programArguments ?? [])")
+            if let program = item.program {
+                print("prog: \(program)")
+            }
+            if let programArguments = item.programArguments {
+                print("args: \(programArguments)")
+            }
             if index != items.count - 1 {
                 print("")
             }
