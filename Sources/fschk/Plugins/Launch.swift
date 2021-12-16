@@ -61,11 +61,12 @@ struct PluginLaunch {
 
     static func pprint() throws {
         let items = try process()
-        print("Checking launch items...\n")
+        print("Checking launch items...")
+        print("------------------------\n")
         for (index, item) in items.enumerated() {
-            print("PATH      : \(item.url.path)")
-            print("PROGRAM   : \(item.program ?? "")")
-            print("ARGUMENTS : \(item.programArguments ?? [])")
+            print("path: \(item.url.path)")
+            print("prog: \(item.program ?? "")")
+            print("args: \(item.programArguments ?? [])")
             if index != items.count - 1 {
                 print("")
             }
