@@ -37,8 +37,8 @@ OPTIONS:
 ```sh
 ~
 ❯ [sudo] fschk
-Checking launch items...
-------------------------
+Launch items
+------------
 
 path: /Library/LaunchDaemons/com.docker.vmnetd.plist
 prog: /Library/PrivilegedHelperTools/com.docker.vmnetd

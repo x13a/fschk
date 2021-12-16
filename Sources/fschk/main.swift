@@ -2,13 +2,13 @@ import Darwin
 
 import ArgumentParser
 
-let Version = "0.1.0"
+private let Version = "0.1.0"
 
-func check() throws {
+private func check() throws {
     try PluginLaunch.pprint()
 }
 
-struct Fschk: ParsableCommand {
+private struct Fschk: ParsableCommand {
     @Flag(help: "Print version and exit")
     var version = false
 

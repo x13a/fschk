@@ -1,21 +1,21 @@
 import Foundation
 
-private let launchPaths: [String] = [
+private let launchDirs: [String] = [
     "/Library/LaunchDaemons/",
     "/Library/LaunchAgents/",
 ]
-private let userLaunchPath = "Library/LaunchAgents/"
+private let userLaunchDir = "Library/LaunchAgents/"
 private let usersDir = "/Users/"
 
-private func parsePlist(_ url: URL) throws -> PluginLaunch.Item {
+private func parsePlist(_ fileUrl: URL) throws -> PluginLaunch.Item {
     var format = PropertyListSerialization.PropertyListFormat.xml
     let data = try PropertyListSerialization.propertyList(
-        from: try Data(contentsOf: url),
+        from: try Data(contentsOf: fileUrl),
         options: .mutableContainersAndLeaves,
         format: &format
     ) as! [String:Any]
     return PluginLaunch.Item(
-        url: url,
+        url: fileUrl,
         program: data["Program"] as? String,
         programArguments: data["ProgramArguments"] as? [String]
     )
@@ -32,17 +32,17 @@ private func getUsersHomeDirs() throws -> [URL] {
 }
 
 private func process() throws -> [PluginLaunch.Item] {
-    var paths = [URL]()
-    paths.append(contentsOf: launchPaths.map { URL(fileURLWithPath: $0, isDirectory: true) })
-    paths.append(contentsOf: try getUsersHomeDirs()
-        .map { $0.appendingPathComponent(userLaunchPath, isDirectory: true) })
+    var dirs = [URL]()
+    dirs.append(contentsOf: launchDirs.map { URL(fileURLWithPath: $0, isDirectory: true) })
+    dirs.append(contentsOf: try getUsersHomeDirs()
+        .map { $0.appendingPathComponent(userLaunchDir, isDirectory: true) })
     var results = [PluginLaunch.Item]()
-    for path in paths {
-        for file in try FileManager
+    for dir in dirs {
+        for fileUrl in try FileManager
             .default
-            .contentsOfDirectory(at: path, includingPropertiesForKeys: nil) {
+            .contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) {
 
-            results.append(try parsePlist(file))
+            results.append(try parsePlist(fileUrl))
         }
     }
     return results
@@ -55,14 +55,12 @@ struct PluginLaunch {
         let programArguments: [String]?
     }
     
-    static func run() throws -> [PluginLaunch.Item] {
-        try process()
-    }
+    static func run() throws -> [Item] { try process() }
 
     static func pprint() throws {
         let items = try process()
-        print("Checking launch items...")
-        print("------------------------\n")
+        print("Launch items")
+        print("------------\n")
         for (index, item) in items.enumerated() {
             print("path: \(item.url.path)")
             print("prog: \(item.program ?? "")")
