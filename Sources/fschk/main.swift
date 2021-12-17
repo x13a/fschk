@@ -2,7 +2,7 @@ import Darwin
 
 import ArgumentParser
 
-private let Version = "0.1.1"
+private let Version = "0.1.2"
 
 private func check() throws {
     try PluginLaunch.pprint()

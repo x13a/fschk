@@ -29,12 +29,10 @@ private func process() throws -> [PluginLaunch.Item] {
         .map { $0.appendingPathComponent(userLaunchDir, isDirectory: true) })
     var results = [PluginLaunch.Item]()
     for dir in dirs {
-        for fileUrl in try FileManager
+        guard let files = try? FileManager
             .default
-            .contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) {
-
-            results.append(try parsePlist(fileUrl))
-        }
+            .contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) else { continue }
+        results.append(contentsOf: try files.map { try parsePlist($0) })
     }
     return results
 }
