@@ -9,6 +9,8 @@ This app is an attempt to wrap things written by
 ## Done
 
 - [x] Launch
+- [x] LSLoginItems
+- [x] StartupItems
 
 ## Installation
 
@@ -37,8 +39,8 @@ OPTIONS:
 ```sh
 ~
 ❯ [sudo] fschk
-Launch items
-------------
+Launch
+------
 
 path: /Library/LaunchDaemons/com.docker.vmnetd.plist
 prog: /Library/PrivilegedHelperTools/com.docker.vmnetd

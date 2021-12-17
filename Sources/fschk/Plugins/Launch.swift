@@ -7,7 +7,6 @@ private let launchDirs: [String] = [
     "/Library/LaunchAgents/",
 ]
 private let userLaunchDir = "Library/LaunchAgents/"
-private let usersDir = "/Users/"
 
 private func parsePlist(_ fileUrl: URL) throws -> PluginLaunch.Item {
     var format = PropertyListSerialization.PropertyListFormat.xml
@@ -21,16 +20,6 @@ private func parsePlist(_ fileUrl: URL) throws -> PluginLaunch.Item {
         program: data["Program"] as? String,
         programArguments: data["ProgramArguments"] as? [String]
     )
-}
-
-private func getUsersHomeDirs() throws -> [URL] {
-    try FileManager
-        .default
-        .contentsOfDirectory(atPath: usersDir)
-        .lazy
-        .map { FileManager.default.homeDirectory(forUser: $0) }
-        .filter { $0 != nil }
-        .map { $0! }
 }
 
 private func process() throws -> [PluginLaunch.Item] {
@@ -60,10 +49,9 @@ struct PluginLaunch {
     static func run() throws -> [Item] { try process() }
 
     static func pprint() throws {
-        let items = try process()
-        print("Launch items")
-        print("------------\n")
-        for (index, item) in items.enumerated() {
+        print("Launch")
+        print("------\n")
+        for item in try process() {
             print("path: \(item.url.path)")
             if let program = item.program {
                 print("prog: \(program)")
@@ -71,9 +59,8 @@ struct PluginLaunch {
             if let programArguments = item.programArguments {
                 print("args: \(programArguments)")
             }
-            if index != items.count - 1 {
-                print("")
-            }
+            print("")
         }
+        print("")
     }
 }

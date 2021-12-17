@@ -2,10 +2,12 @@ import Darwin
 
 import ArgumentParser
 
-private let Version = "0.1.0"
+private let Version = "0.1.1"
 
 private func check() throws {
     try PluginLaunch.pprint()
+    try PluginLSLoginItems.pprint()
+    try PluginStartupItems.pprint()
 }
 
 private struct Fschk: ParsableCommand {
