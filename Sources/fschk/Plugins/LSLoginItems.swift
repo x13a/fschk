@@ -28,19 +28,19 @@ private func getItems(for type: Unmanaged<CFString>) -> [PluginLSLoginItems.Item
     return results
 }
 
-private func process() throws -> [PluginLSLoginItems.Item] { types.flatMap { getItems(for: $0) } }
+private func scan() throws -> [PluginLSLoginItems.Item] { types.flatMap { getItems(for: $0) } }
 
 struct PluginLSLoginItems {
     struct Item {
         let url: URL
     }
 
-    static func run() throws -> [Item] { try process() }
+    static func run() throws -> [Item] { try scan() }
 
     static func pprint() throws {
         print("LSLoginItems")
         print("------------\n")
-        for item in try process() {
+        for item in try scan() {
             print("path: \(item.url.path)")
         }
         print("")

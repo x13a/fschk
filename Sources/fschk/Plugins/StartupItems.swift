@@ -4,7 +4,7 @@ import Foundation
 
 private let startupDir = "/Library/StartupItems/"
 
-private func process() throws -> [PluginStartupItems.Item] {
+private func scan() throws -> [PluginStartupItems.Item] {
     try FileManager
         .default
         .contentsOfDirectory(
@@ -18,12 +18,12 @@ struct PluginStartupItems {
         let url: URL
     }
 
-    static func run() throws -> [Item] { try process() }
+    static func run() throws -> [Item] { try scan() }
 
     static func pprint() throws {
         print("StartupItems")
         print("------------\n")
-        for item in try process() {
+        for item in try scan() {
             print("path: \(item.url.path)")
         }
         print("")

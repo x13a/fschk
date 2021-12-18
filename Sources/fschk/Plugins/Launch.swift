@@ -22,7 +22,7 @@ private func parsePlist(_ fileUrl: URL) throws -> PluginLaunch.Item {
     )
 }
 
-private func process() throws -> [PluginLaunch.Item] {
+private func scan() throws -> [PluginLaunch.Item] {
     var dirs = [URL]()
     dirs.append(contentsOf: launchDirs.map { URL(fileURLWithPath: $0, isDirectory: true) })
     dirs.append(contentsOf: try getUsersHomeDirs()
@@ -44,12 +44,12 @@ struct PluginLaunch {
         let programArguments: [String]?
     }
     
-    static func run() throws -> [Item] { try process() }
+    static func run() throws -> [Item] { try scan() }
 
     static func pprint() throws {
         print("Launch")
         print("------\n")
-        for item in try process() {
+        for item in try scan() {
             print("path: \(item.url.path)")
             if let program = item.program {
                 print("prog: \(program)")
