@@ -10,7 +10,8 @@ private func scan() throws -> [PluginStartupItems.Item] {
         .contentsOfDirectory(
             at: URL(fileURLWithPath: startupDir, isDirectory: true), 
             includingPropertiesForKeys: nil
-        ).map { PluginStartupItems.Item(url: $0) }
+        )
+        .map { PluginStartupItems.Item(url: $0) }
 }
 
 struct PluginStartupItems {

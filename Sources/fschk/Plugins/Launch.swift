@@ -9,11 +9,9 @@ private let launchDirs: [String] = [
 private let userLaunchDir = "Library/LaunchAgents/"
 
 private func parsePlist(_ fileUrl: URL) throws -> PluginLaunch.Item {
-    var format = PropertyListSerialization.PropertyListFormat.xml
     let data = try PropertyListSerialization.propertyList(
         from: try Data(contentsOf: fileUrl),
-        options: .mutableContainersAndLeaves,
-        format: &format
+        format: nil
     ) as! [String:Any]
     return PluginLaunch.Item(
         url: fileUrl,
@@ -23,18 +21,17 @@ private func parsePlist(_ fileUrl: URL) throws -> PluginLaunch.Item {
 }
 
 private func scan() throws -> [PluginLaunch.Item] {
-    var dirs = [URL]()
-    dirs.append(contentsOf: launchDirs.map { URL(fileURLWithPath: $0, isDirectory: true) })
+    var dirs = launchDirs.map { URL(fileURLWithPath: $0, isDirectory: true) }
     dirs.append(contentsOf: try getUsersHomeDirs()
         .map { $0.appendingPathComponent(userLaunchDir, isDirectory: true) })
-    var results = [PluginLaunch.Item]()
-    for dir in dirs {
-        guard let files = try? FileManager
-            .default
-            .contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) else { continue }
-        results.append(contentsOf: try files.map { try parsePlist($0) })
-    }
-    return results
+    return try dirs
+        .lazy
+        .compactMap { 
+            try? FileManager
+                .default
+                .contentsOfDirectory(at: $0, includingPropertiesForKeys: nil)
+        }
+        .flatMap { try $0.map { try parsePlist($0) } }
 }
 
 struct PluginLaunch { 

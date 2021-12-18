@@ -19,13 +19,10 @@ private func getItems(for type: Unmanaged<CFString>) -> [PluginLSLoginItems.Item
 
         return []
     }
-    var results = [PluginLSLoginItems.Item]()
-    for item in snapshot {
-        guard let url = LSSharedFileListItemCopyResolvedURL(item, 0, nil)?
-            .takeRetainedValue() as URL? else { continue }
-        results.append(PluginLSLoginItems.Item(url: url))
-    }
-    return results
+    return snapshot
+        .lazy
+        .compactMap { LSSharedFileListItemCopyResolvedURL($0, 0, nil)?.takeRetainedValue() as URL? }
+        .map { PluginLSLoginItems.Item(url: $0) }
 }
 
 private func scan() throws -> [PluginLSLoginItems.Item] { types.flatMap { getItems(for: $0) } }
