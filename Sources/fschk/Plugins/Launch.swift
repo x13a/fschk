@@ -34,26 +34,22 @@ private func scan() throws -> [PluginLaunch.Item] {
         .flatMap { try $0.map { try parsePlist($0) } }
 }
 
-struct PluginLaunch { 
-    struct Item {
+struct PluginLaunch: Plugin { 
+    struct Item: Codable {
         let url: URL
         let program: String?
         let programArguments: [String]?
     }
     
-    static func run() throws -> [Item] { try scan() }
+    static func run() throws -> [Codable] { try scan() }
 
     static func pprint() throws {
-        print("Launch")
-        print("------\n")
-        for item in try scan() {
+        let items = try scan()
+        printPluginHeader(#file, items.count)
+        for item in items {
             print("path: \(item.url.path)")
-            if let program = item.program {
-                print("prog: \(program)")
-            }
-            if let programArguments = item.programArguments {
-                print("args: \(programArguments)")
-            }
+            print("prog: \(item.program ?? "nil")")
+            print("args: \(item.programArguments ?? [])")
             print("")
         }
         print("")

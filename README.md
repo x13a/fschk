@@ -39,8 +39,8 @@ OPTIONS:
 ```sh
 ~
 ❯ [sudo] fschk
-Launch
-------
+Launch (6)
+----------
 
 path: /Library/LaunchDaemons/com.docker.vmnetd.plist
 prog: /Library/PrivilegedHelperTools/com.docker.vmnetd

@@ -14,17 +14,17 @@ private func scan() throws -> [PluginStartupItems.Item] {
         .map { PluginStartupItems.Item(url: $0) }
 }
 
-struct PluginStartupItems {
-    struct Item {
+struct PluginStartupItems: Plugin {
+    struct Item: Codable {
         let url: URL
     }
 
-    static func run() throws -> [Item] { try scan() }
+    static func run() throws -> [Codable] { try scan() }
 
     static func pprint() throws {
-        print("StartupItems")
-        print("------------\n")
-        for item in try scan() {
+        let items = try scan()
+        printPluginHeader(#file, items.count)
+        for item in items {
             print("path: \(item.url.path)")
         }
         print("")

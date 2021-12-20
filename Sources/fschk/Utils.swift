@@ -10,3 +10,11 @@ func getUsersHomeDirs() throws -> [URL] {
 }
 
 func isRoot() -> Bool { getuid() == 0 }
+
+func printPluginHeader(_ file: String, _ count: Int) {
+    let name = URL(fileURLWithPath: file).deletingPathExtension().lastPathComponent
+    let header = "\(name) (\(count))"
+    print(header)
+    print(String(repeating: "-", count: header.count))
+    print("")
+}

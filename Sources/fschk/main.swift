@@ -1,13 +1,22 @@
-import Darwin
-
 import ArgumentParser
 
-private let Version = "0.1.2"
+private let Version = "0.1.3"
+
+protocol Plugin {
+    static func run() throws -> [Codable]
+    static func pprint() throws
+}
+
+private let plugins: [Plugin.Type] = [
+    PluginLaunch.self,
+    PluginLSLoginItems.self,
+    PluginStartupItems.self,
+]
 
 private func check() throws {
-    try PluginLaunch.pprint()
-    try PluginLSLoginItems.pprint()
-    try PluginStartupItems.pprint()
+    for plugin in plugins {
+        try plugin.pprint()
+    }
 }
 
 private struct Fschk: ParsableCommand {

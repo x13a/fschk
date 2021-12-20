@@ -27,17 +27,17 @@ private func getItems(for type: Unmanaged<CFString>) -> [PluginLSLoginItems.Item
 
 private func scan() throws -> [PluginLSLoginItems.Item] { types.flatMap { getItems(for: $0) } }
 
-struct PluginLSLoginItems {
-    struct Item {
+struct PluginLSLoginItems: Plugin {
+    struct Item: Codable {
         let url: URL
     }
 
-    static func run() throws -> [Item] { try scan() }
+    static func run() throws -> [Codable] { try scan() }
 
     static func pprint() throws {
-        print("LSLoginItems")
-        print("------------\n")
-        for item in try scan() {
+        let items = try scan()
+        printPluginHeader(#file, items.count)
+        for item in items {
             print("path: \(item.url.path)")
         }
         print("")
