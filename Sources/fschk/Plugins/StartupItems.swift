@@ -2,15 +2,20 @@ import Foundation
 
 // https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html
 
-private let startupDir = "/Library/StartupItems/"
+private let startupItemsDir = "StartupItems/"
 
 private func scan() throws -> [PluginStartupItems.Item] {
-    try FileManager
+    FileManager
         .default
-        .contentsOfDirectory(
-            at: URL(fileURLWithPath: startupDir, isDirectory: true), 
-            includingPropertiesForKeys: nil
-        )
+        .urls(for: .libraryDirectory, in: .localDomainMask)
+        .lazy
+        .compactMap { 
+            try? FileManager.default.contentsOfDirectory(
+                at: $0.appendingPathComponent(startupItemsDir, isDirectory: true), 
+                includingPropertiesForKeys:nil
+            ) 
+        }
+        .flatMap { $0 }
         .map { PluginStartupItems.Item(url: $0) }
 }
 
@@ -27,6 +32,8 @@ struct PluginStartupItems: Plugin {
         for item in items {
             print("path: \(item.url.path)")
         }
-        print("")
+        if !items.isEmpty {
+            print("")
+        }
     }
 }

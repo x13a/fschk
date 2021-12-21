@@ -40,6 +40,8 @@ struct PluginLSLoginItems: Plugin {
         for item in items {
             print("path: \(item.url.path)")
         }
-        print("")
+        if !items.isEmpty {
+            print("")
+        }
     }
 }

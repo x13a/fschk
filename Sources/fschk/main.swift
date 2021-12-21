@@ -1,6 +1,6 @@
 import ArgumentParser
 
-private let Version = "0.1.3"
+private let Version = "0.1.4"
 
 protocol Plugin {
     static func run() throws -> [Codable]
@@ -11,6 +11,7 @@ private let plugins: [Plugin.Type] = [
     PluginLaunch.self,
     PluginLSLoginItems.self,
     PluginStartupItems.self,
+    PluginPaths.self,
 ]
 
 private func check() throws {

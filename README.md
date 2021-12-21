@@ -11,6 +11,7 @@ This app is an attempt to wrap things written by
 - [x] Launch
 - [x] LSLoginItems
 - [x] StartupItems
+- [ ] Paths
 
 ## Installation
 
