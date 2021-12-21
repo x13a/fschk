@@ -8,7 +8,7 @@ private let types = [
     Unmanaged.passUnretained(kGlobalLoginItems),
 ]
 
-private func getItems(for type: Unmanaged<CFString>) -> [PluginLSLoginItems.Item] {
+private func getItems(for type: Unmanaged<CFString>) -> [PluginLSLoginItem.Item] {
     guard let sfl = LSSharedFileListCreate(nil, type.takeRetainedValue(), nil)?
         .takeRetainedValue() else {
 
@@ -22,12 +22,12 @@ private func getItems(for type: Unmanaged<CFString>) -> [PluginLSLoginItems.Item
     return snapshot
         .lazy
         .compactMap { LSSharedFileListItemCopyResolvedURL($0, 0, nil)?.takeRetainedValue() as URL? }
-        .map { PluginLSLoginItems.Item(url: $0) }
+        .map { PluginLSLoginItem.Item(url: $0) }
 }
 
-private func scan() throws -> [PluginLSLoginItems.Item] { types.flatMap { getItems(for: $0) } }
+private func scan() throws -> [PluginLSLoginItem.Item] { types.flatMap { getItems(for: $0) } }
 
-struct PluginLSLoginItems: Plugin {
+struct PluginLSLoginItem: Plugin {
     struct Item: Codable {
         let url: URL
     }
@@ -38,7 +38,7 @@ struct PluginLSLoginItems: Plugin {
         let items = try scan()
         printPluginHeader(#file, items.count)
         for item in items {
-            print("path: \(item.url.path)")
+            print("\(item.url.path)")
         }
         if !items.isEmpty {
             print("")

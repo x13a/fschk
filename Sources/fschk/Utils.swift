@@ -8,8 +8,6 @@ func getUsersHomeDirs() throws -> [URL] {
         .compactMap { FileManager.default.homeDirectory(forUser: $0) }
 }
 
-func isRoot() -> Bool { getuid() == 0 }
-
 func printPluginHeader(_ path: String, _ count: Int) {
     let name = URL(fileURLWithPath: path).deletingPathExtension().lastPathComponent
     let header = "\(name) (\(count))"

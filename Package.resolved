@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "CodeSign",
+        "repositoryURL": "https://github.com/x13a/codesign-swift",
+        "state": {
+          "branch": null,
+          "revision": "5f6f028e2c7ae48efe006dded17b0e8d82fb945d",
+          "version": "0.1.1"
+        }
+      },
+      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {

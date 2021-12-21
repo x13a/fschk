@@ -9,9 +9,9 @@ This app is an attempt to wrap things written by
 ## Done
 
 - [x] Launch
-- [x] LSLoginItems
-- [x] StartupItems
-- [ ] Paths
+- [x] LSLoginItem
+- [ ] Hash
+- [ ] Application
 
 ## Installation
 
@@ -43,8 +43,9 @@ OPTIONS:
 Launch (6)
 ----------
 
-path: /Library/LaunchDaemons/com.docker.vmnetd.plist
-prog: /Library/PrivilegedHelperTools/com.docker.vmnetd
-args: ["/Library/PrivilegedHelperTools/com.docker.vmnetd"]
+/Library/LaunchDaemons/com.docker.vmnetd.plist
+  prog -> /Library/PrivilegedHelperTools/com.docker.vmnetd
+  args -> ["/Library/PrivilegedHelperTools/com.docker.vmnetd"]
+  dyld -> nil
 ...
 ```

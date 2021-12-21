@@ -9,17 +9,18 @@ private let launchDirs: [String] = [
 ]
 private let userLaunchAgentsDir = "Library/LaunchAgents/"
 
-private func parsePlist(_ fileUrl: URL) throws -> PluginLaunch.Item {
+private func parsePlist(_ fileURL: URL) throws -> PluginLaunch.Item {
     let data = try PropertyListSerialization.propertyList(
-        from: try Data(contentsOf: fileUrl),
+        from: try Data(contentsOf: fileURL),
         format: nil
     ) as! [String:Any]
-    let environ = data["EnvironmentVariables"] as? [String:Any] ?? [:]
     return PluginLaunch.Item(
-        url: fileUrl,
+        url: fileURL,
         program: data["Program"] as? String,
         programArguments: data["ProgramArguments"] as? [String],
-        dyldLibraries: environ["DYLD_INSERT_LIBRARIES"] as? String
+        dyldLibraries: (data["EnvironmentVariables"] as? [String:Any])?
+            .filter { $0.key.hasSuffix(EnvDyldInsertLibrariesSuffix) }
+            .map { $0.value as! String }
     )
 }
 
@@ -43,7 +44,7 @@ struct PluginLaunch: Plugin {
         let url: URL
         let program: String?
         let programArguments: [String]?
-        let dyldLibraries: String?
+        let dyldLibraries: [String]?
     }
     
     static func run() throws -> [Codable] { try scan() }
@@ -52,10 +53,10 @@ struct PluginLaunch: Plugin {
         let items = try scan()
         printPluginHeader(#file, items.count)
         for item in items {
-            print("path: \(item.url.path)")
-            print("prog: \(item.program ?? "nil")")
-            print("args: \(item.programArguments ?? [])")
-            print("dyld: \(item.dyldLibraries ?? "nil")")
+            print("\(item.url.path)")
+            print("  prog -> \(item.program ?? "nil")")
+            print("  args -> \(item.programArguments?.description ?? "nil")")
+            print("  dyld -> \(item.dyldLibraries?.description ?? "nil")")
             print("")
         }
     }
