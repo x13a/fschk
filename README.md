@@ -10,8 +10,8 @@ This app is an attempt to wrap things written by
 
 - [x] Launch
 - [x] LSLoginItem
-- [ ] Hash
-- [ ] Application
+- [ ] Hash (partial)
+- [ ] Application (partial)
 
 ## Installation
 
