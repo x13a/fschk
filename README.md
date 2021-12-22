@@ -10,8 +10,8 @@ This app is an attempt to wrap things written by
 
 - [x] Launch
 - [x] LSLoginItem
-- [ ] Hash
-- [ ] Application
+- [ ] Hash (partial)
+- [ ] Application (partial)
 
 ## Installation
 
@@ -49,3 +49,7 @@ Launch (6)
   dyld -> nil
 ...
 ```
+
+## License
+
+[![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
